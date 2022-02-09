@@ -60,9 +60,9 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
     }
 
     // Device has TouchID
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+    if ([passcodeFallback boolValue] && [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
         // Attempt Authentification
-        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthentication
                 localizedReason:reason
                           reply:^(BOOL success, NSError *error)
          {
@@ -70,9 +70,9 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
          }];
 
         // Device does not support TouchID but user wishes to use passcode fallback
-    } else if ([passcodeFallback boolValue] && [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
+    } else if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
         // Attempt Authentification
-        [context evaluatePolicy:LAPolicyDeviceOwnerAuthentication
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
                 localizedReason:reason
                           reply:^(BOOL success, NSError *error)
          {
