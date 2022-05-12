@@ -1,3 +1,5 @@
+// alex edited it may/12/22 
+
 #import "TouchID.h"
 #import <React/RCTUtils.h>
 
@@ -26,9 +28,9 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
     NSError *error;
 
     // Device has TouchID
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
         // Attempt Authentification
-        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthentication
                 localizedReason:reason
                           reply:^(BOOL success, NSError *error)
          {
@@ -70,6 +72,8 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
                          errorReason = @"RCTTouchIDUnknownError";
                          break;
                  }
+
+                 
 
                  NSLog(@"Authentication failed: %@", errorReason);
                  callback(@[RCTMakeError(errorReason, nil, nil)]);
