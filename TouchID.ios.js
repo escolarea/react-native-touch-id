@@ -2,12 +2,12 @@
  * @providesModule TouchID
  * @flow
  */
-'use strict';
+"use strict";
 
-import { NativeModules } from 'react-native';
+import { NativeModules } from "react-native";
 const NativeTouchID = NativeModules.TouchID;
-const { iOSErrors } = require('./data/errors');
-const { getError, TouchIDError, TouchIDUnifiedError } = require('./errors');
+const { iOSErrors } = require("./data/errors");
+const { getError, TouchIDError, TouchIDUnifiedError } = require("./errors");
 
 /**
  * High-level docs for the TouchID iOS API can be written here.
@@ -30,13 +30,13 @@ export default {
     const DEFAULT_CONFIG = {
       fallbackLabel: null,
       unifiedErrors: false,
-      passcodeFallback: false
+      passcodeFallback: false,
     };
-    const authReason = reason ? reason : ' ';
+    const authReason = reason ? reason : " ";
     const authConfig = Object.assign({}, DEFAULT_CONFIG, config);
 
     return new Promise((resolve, reject) => {
-      NativeTouchID.authenticate(authReason, authConfig, error => {
+      NativeTouchID.authenticate(authReason, authConfig, (error) => {
         // Return error if rejected
         if (error) {
           return reject(createError(authConfig, error.message));
@@ -45,7 +45,18 @@ export default {
         resolve(true);
       });
     });
-  }
+  },
+  hasScreenLockEnabled() {
+    return new Promise((resolve, reject) => {
+      NativeTouchID.hasScreenLockEnabled((error, response) => {
+        if (error) {
+          return reject(createError(error.message));
+        }
+
+        resolve(response);
+      });
+    });
+  },
 };
 
 function createError(config, error) {

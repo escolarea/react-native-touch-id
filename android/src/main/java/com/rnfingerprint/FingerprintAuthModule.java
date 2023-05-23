@@ -143,7 +143,27 @@ public class FingerprintAuthModule extends ReactContextBaseJavaModule implements
         }
         return FingerprintAuthConstants.IS_SUPPORTED;
     }
+    @ReactMethod
+    public void hasScreenLockEnabled(Promise promise) {
+        KeyguardManager keyguardManager = getKeyguardManager();
+        Activity activity = getCurrentActivity();
+        if (keyguardManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // Check if fingerprint authentication is available
+                FingerprintManager fingerprintManager = (FingerprintManager) activity.getSystemService(Context.FINGERPRINT_SERVICE);
+                if (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
+                    promise.resolve(true);
+                    return;
+                }
+            }
 
+            // Check if PIN, passcode, or pattern is set
+            boolean isSecure = keyguardManager.isKeyguardSecure();
+            promise.resolve(isSecure);
+        } else {
+            promise.resolve(false);
+        }
+    }
     @Override
     public void onHostResume() {
         isAppActive = true;

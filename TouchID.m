@@ -167,4 +167,17 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
     return @"TouchID";
 }
 
+RCT_EXPORT_METHOD(hasScreenLockEnabled: (RCTResponseSenderBlock)callback)
+{
+    LAContext *context = [[LAContext alloc] init];
+    
+    BOOL isPasscodeEnabled = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil];
+    BOOL isBiometricsEnabled = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
+    
+    BOOL isScreenLockEnabled = isPasscodeEnabled || isBiometricsEnabled;
+    callback(@[[NSNull null], @(isScreenLockEnabled)]);
+    
+    
+}
+
 @end
