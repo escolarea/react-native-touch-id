@@ -36,7 +36,7 @@
     "eslint-plugin-react": "2.7.1"
   },
   "publishConfig": {
-    "@alex-varela:registry": "https://npm.pkg.github.com"
+    "@escolarea:registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "npm": "^10.4.0"
