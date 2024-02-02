@@ -37,5 +37,8 @@
   },
   "publishConfig": {
     "@linker:registry": "https://npm.pkg.github.com"
+  },
+  "dependencies": {
+    "npm": "^10.4.0"
   }
 }
